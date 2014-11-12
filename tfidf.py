@@ -1,12 +1,6 @@
 #%!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import sys
-import codecs
-import vital        # 自作，よく使う処理群
-import mecabutil    # 自作，MeCabのwrapperとそのクラス
-import math
-
 def get_tf(file_path):
     """
     引数のファイルを読み込み，TFを計算する．
@@ -17,6 +11,9 @@ def get_tf(file_path):
     Returns:
         単語とそのTF値を組にした辞書型．
     """
+    import vital        # 自作，よく使う処理群
+    import mecabutil    # 自作，MeCabのwrapperとそのクラス
+
     tf = {}
 
     # ファイル読み込み
@@ -44,6 +41,10 @@ def get_idf(directory_path):
     Returns:
         単語とそのIDF値を組にした辞書型．
     """
+    import vital        # 自作，よく使う処理群
+    import mecabutil    # 自作，MeCabのwrapperとそのクラス
+    import math
+
     files = vital.get_abs_path(directory_path)   
 
     df = {}

@@ -1,9 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import MeCab
-import re
-
 # Wordクラス定義
 class Word:
     # コンストラクタ
@@ -35,6 +32,9 @@ class Word:
         return self.pos_detail3
 
 def get_words(string):
+    import MeCab
+    import re
+
     enc_string = string.encode("utf-8")
 
     result = MeCab.Tagger("")\
