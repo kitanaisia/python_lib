@@ -1,7 +1,7 @@
 #%!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-def get_tf(file_path):
+def tf(file_path):
     """
     引数のファイルを読み込み，TFを計算する．
     
@@ -14,8 +14,6 @@ def get_tf(file_path):
     import vital        # 自作，よく使う処理群
     import mecabutil    # 自作，MeCabのwrapperとそのクラス
 
-    tf = {}
-
     # ファイル読み込み
     contents = vital.file_read(file_path)
 
@@ -26,12 +24,11 @@ def get_tf(file_path):
     nouns = [word.surface for word in words if word.pos == u"名詞"]
 
     # 名詞の集合(重複なし)を用意し，各名詞毎に出現回数をカウントする
-    for key in set(nouns):
-        tf[key] = float( nouns.count(key) ) / float( len(nouns) )
+    tf = {key : ( float( nouns.count(key) ) / float( len(nouns) ) ) for key in set(nouns)}
 
     return tf
 
-def get_idf(directory_path):
+def idf(directory_path):
     """
     ディレクトリ中の全ファイルからidf値を計算する．
 
@@ -45,10 +42,9 @@ def get_idf(directory_path):
     import mecabutil    # 自作，MeCabのwrapperとそのクラス
     import math
 
-    files = vital.get_abs_path(directory_path)   
+    files = vital.file_list(directory_path)   
 
     df = {}
-    idf = {}
     df_default = 0  # dfハッシュのデフォルト値
 
     for file in files:
@@ -64,14 +60,12 @@ def get_idf(directory_path):
         for key in set(nouns):
             df[key] = df.get(key, df_default) + 1
 
-        # dfからidfを計算
-        for k,v in df.items():
-            idf[k] = math.log10( 1.0 + (len(files) / v) )
-
+    # dfからidfを計算
+    idf = {k:math.log10( 1.0 + ( len(files) ) / v ) for k,v in df.items()}
 
     return idf
 
-def get_tfidf(tf, idf):
+def tfidf(tf, idf):
     """
     TFとIDFからTF-IDFを計算する．
 
@@ -82,10 +76,8 @@ def get_tfidf(tf, idf):
     Returns:
         単語とそのTF-IDF値を組に持つ辞書型．
     """
-    tfidf = {}
     idf_unknown = 0 #未知語のidf値．0は不適切だが，今は考えない．
 
-    for k,v in tf.items():
-        tfidf[k] = v * idf.get(k, idf_unknown)
+    tfidf = {k:v * idf.get(k,idf_unknown) for k,v in tf.items()}
 
     return tfidf

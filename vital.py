@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-def get_abs_path(directory_path):
+def file_list(directory_path):
     import os
 
     file_list = os.listdir(directory_path)
