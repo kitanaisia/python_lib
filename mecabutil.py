@@ -1,13 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Word$B%/%i%9Dj5A(B
+# Wordクラス定義
 class Word:
-    # $B%3%s%9%H%i%/%?(B
+    # コンストラクタ
     def __init__(self, surface = None, pos = None, pos_detail1 = None, pos_detail2 = None, pos_detail3 = None):
         self.set_field(surface, pos, pos_detail1, pos_detail2, pos_detail3)       
         
-    # $B%;%C%?!<(B
+    # セッター
     def set_field(self, surface, pos, pos_detail1, pos_detail2, pos_detail3):
         self.surface = surface
         self.pos = pos
@@ -15,7 +15,7 @@ class Word:
         self.pos_detail2 = pos_detail2
         self.pos_detail3 = pos_detail3
 
-    # $B%2%C%?!<(B
+    # ゲッター
     def get_surface(self):
         return self.surface
 
@@ -58,7 +58,7 @@ def get_words(string):
 
     return word_arr
 
-# Word$B%/%i%9$N>pJs=PNO4X?t(B
+# Wordクラスの情報出力関数
 def print_word(word):
     print(word.get_surface()) ,
     print(word.get_pos()) ,
