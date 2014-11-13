@@ -35,3 +35,11 @@ def dict_cosine(dict1, dict2):
     sim = 1 - scipy.spatial.distance.cosine(vector1, vector2)
 
     return sim
+
+def parse(file_path, separator):
+    import re
+
+    f = open(file_path)
+    result = [line.strip("\n").decode("utf-8").split(separator) for line in f]
+
+    return result
