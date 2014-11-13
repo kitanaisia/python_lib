@@ -1,6 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+# 日本語対応prettyprint
+# 参考：http://qiita.com/HirofumiYashima/items/4a5d6f1f0a23e787bc34
+def pp(obj):
+    import re, pprint
+
+    pp = pprint.PrettyPrinter(indent=4, width=160)
+    str = pp.pformat(obj)
+
+    print( re.sub(r"\\u([0-9a-f]{4})", lambda x: unichr(int("0x"+x.group(1), 16)), str) )
 
 def file_list(directory_path):
     import os
@@ -43,3 +52,4 @@ def parse(file_path, separator):
     result = [line.strip("\n").decode("utf-8").split(separator) for line in f]
 
     return result
+
