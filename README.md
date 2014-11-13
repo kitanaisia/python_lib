@@ -5,6 +5,7 @@ They are my useful and frequently-used functions.
 
 vital
 =====
+pp:prettyprintのwrapper.unicode文字列のリストの出力に対応．
 file_list:ディレクトリ中のファイルの絶対パスをリストにして返す．  
 file_read:ファイルを開き，utf-8に文字コード変換してからdecodeしたものを返す．  
 dict_cosine:2辞書間のコサイン類似度を返す．  
