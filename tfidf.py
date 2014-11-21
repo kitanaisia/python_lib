@@ -41,11 +41,11 @@ def idf(directory_path):
     import vital        # 自作，よく使う処理群
     import mecabutil    # 自作，MeCabのwrapperとそのクラス
     import math
+    import collections
 
     files = vital.file_list(directory_path)   
 
-    df = {}
-    df_default = 0  # dfハッシュのデフォルト値
+    df = collections.defaultdict(int)
 
     for file in files:
         contents = vital.file_read(file)
@@ -58,10 +58,10 @@ def idf(directory_path):
 
         # 文書中の名詞を集合(重複なしの要素の集まり)とし，存在する名詞のdf値をインクリメント
         for key in set(nouns):
-            df[key] = df.get(key, df_default) + 1
+            df[key] += 1
 
     # dfからidfを計算
-    idf = {k:math.log10( 1.0 + ( len(files) ) / v ) for k,v in df.items()}
+    idf = {k:math.log( 1.0 + ( len(files) ) / v ) for k,v in df.items()}
 
     return idf
 
