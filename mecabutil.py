@@ -42,7 +42,8 @@ def get_words(string):
                   .decode("utf-8")
 
     lines = result.split("\n")
-    pattern = r"^(.*?)\t(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?)$"
+    pattern = r"^(.*?)\t(.*?),(.*?),(.*?),(.*?),(.*?)$"
+    # pattern = r"^(.*?)\t(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?)$"
     word_arr = []
     for line in lines:
         iterator = re.finditer(pattern, line)
