@@ -105,6 +105,10 @@ def doc_convolute(string, word2vec_model, ndim):
         except:
             matrix = numpy.vstack([ matrix, numpy.zeros(ndim)])
 
+    # エラー処理:1単語しか存在しない場合，畳み込み不可能．そのベクトルを返す
+    if matrix.ndim == 1:
+        return matrix
+
     # ベクトルコンボルーション
     conv_matrix = numpy.zeros(ndim)
     for i in range(len(matrix)-1):
