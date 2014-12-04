@@ -82,4 +82,38 @@ def tfidf(tf, idf):
 
     return tfidf
 
+def doc_convolute(file_name, word2vec_model, ndim):
+    """
+    Args:
+        file_name:      ファイルの相対パス，または絶対パス
+        word2vec_model: Word2Vec.load(model)したもの
+        ndim:           modelの次元数．
+    """
+    import vital
+    import mecabutil
+    import numpy
+    from gensim.models import word2vec
 
+    contents = vital.file_read(file_name)
+    words = mecabutil.get_words(contents)
+    nouns = [word.surface for word in words if word.pos == u"名詞"]
+
+    # 文中の名詞数(縦) * modelの次元数(横) の行列の生成
+    matrix = numpy.zeros(ndim)  # いい初期化方法がないのでこれで
+    for noun in nouns:
+        try:
+            matrix = numpy.vstack([ matrix, word2vec_model[noun] ])
+            # matrix += word2vec_model[noun]
+        except:
+            matrix = numpy.vstack([ matrix, numpy.zeros(ndim)])
+
+    # ベクトルコンボルーション
+    conv_matrix = numpy.zeros(ndim)
+    for i in range(len(matrix)-1):
+        conv_vector = numpy.convolve(matrix[i,:], matrix[i+1,:], "same")
+        conv_matrix = numpy.vstack([ conv_matrix, conv_vector])
+
+    # 各行のMAX値を取得
+    vector = numpy.array([max(row) for row in conv_matrix.T])
+
+    return vector
