@@ -1,3 +1,1 @@
-mecabutil.pyc
-tfidf.pyc
-vital.pyc
+*.pyc
