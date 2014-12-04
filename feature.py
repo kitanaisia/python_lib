@@ -82,20 +82,18 @@ def tfidf(tf, idf):
 
     return tfidf
 
-def doc_convolute(file_name, word2vec_model, ndim):
+def doc_convolute(string, word2vec_model, ndim):
     """
     Args:
         file_name:      ファイルの相対パス，または絶対パス
         word2vec_model: Word2Vec.load(model)したもの
         ndim:           modelの次元数．
     """
-    import vital
     import mecabutil
     import numpy
     from gensim.models import word2vec
 
-    contents = vital.file_read(file_name)
-    words = mecabutil.get_words(contents)
+    words = mecabutil.get_words(string)
     nouns = [word.surface for word in words if word.pos == u"名詞"]
 
     # 文中の名詞数(縦) * modelの次元数(横) の行列の生成
