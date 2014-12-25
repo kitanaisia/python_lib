@@ -102,7 +102,10 @@ def doc_convolute(content_words, word2vec_model, ndim):
         except:
             matrix = numpy.vstack([ matrix, numpy.zeros(ndim)])
 
-    # エラー処理:1単語しか存在しない場合，畳み込み不可能．そのベクトルを返す
+    # 変数初期化のために作成した0ベクトルを削除
+    matrix = numpy.delete(matrix, 0, 0)
+
+    ## エラー処理:1単語しか存在しない場合，畳み込み不可能．そのベクトルを返す
     if matrix.ndim == 1:
         return matrix
 
@@ -111,6 +114,9 @@ def doc_convolute(content_words, word2vec_model, ndim):
     for i in range(len(matrix)-1):
         conv_vector = numpy.convolve(matrix[i,:], matrix[i+1,:], "same")
         conv_matrix = numpy.vstack([ conv_matrix, conv_vector])
+
+    ## 変数初期化のために作成した0ベクトルを削除
+    conv_matrix = numpy.delete(conv_matrix, 0, 0)
 
     # 各行のMAX値を取得
     vector = numpy.array([max(row) for row in conv_matrix.T])
