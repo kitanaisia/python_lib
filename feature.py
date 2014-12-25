@@ -2,15 +2,15 @@
 # -*- coding: utf-8 -*-
 
 def tf(file_path):
-    """
-    引数のファイルを読み込み，TFを計算する．
-    
-    Args:
-        file_path: TFを計算するファイルの相対，または絶対パス．
-
-    Returns:
-        単語とそのTF値を組にした辞書型．
-    """
+    #
+    # 引数のファイルを読み込み，TFを計算する．
+    #
+    # Args:
+    #     file_path: TFを計算するファイルの相対，または絶対パス．
+    #
+    # Returns:
+    #     単語とそのTF値を組にした辞書型．
+    #
     import vital        # 自作，よく使う処理群
     import mecabutil    # 自作，MeCabのwrapperとそのクラス
 
@@ -29,15 +29,15 @@ def tf(file_path):
     return tf
 
 def idf(directory_path):
-    """
-    ディレクトリ中の全ファイルからidf値を計算する．
-
-    Args:
-        directory_path: idfを計算するファイル群が存在するディレクトリの相対，または絶対パス．
-
-    Returns:
-        単語とそのIDF値を組にした辞書型．
-    """
+    # 
+    # ディレクトリ中の全ファイルからidf値を計算する．
+    # 
+    # Args:
+    #     directory_path: idfを計算するファイル群が存在するディレクトリの相対，または絶対パス．
+    # 
+    # Returns:
+    #     単語とそのIDF値を組にした辞書型．
+    # 
     import vital        # 自作，よく使う処理群
     import mecabutil    # 自作，MeCabのwrapperとそのクラス
     import math
@@ -66,16 +66,16 @@ def idf(directory_path):
     return idf
 
 def tfidf(tf, idf):
-    """
-    TFとIDFからTF-IDFを計算する．
-
-    Args:
-        tf:  単語とそのTF値を組に持つ辞書型．
-        idf: 単語とそのIDF値を組に持つ辞書型．
-    
-    Returns:
-        単語とそのTF-IDF値を組に持つ辞書型．
-    """
+    # 
+    # TFとIDFからTF-IDFを計算する．
+    # 
+    # Args:
+    #     tf:  単語とそのTF値を組に持つ辞書型．
+    #     idf: 単語とそのIDF値を組に持つ辞書型．
+    # 
+    # Returns:
+    #     単語とそのTF-IDF値を組に持つ辞書型．
+    #
     idf_unknown = 0 #未知語のidf値．0は不適切だが，今は考えない．
 
     tfidf = {k:v * idf.get(k,idf_unknown) for k,v in tf.items()}
@@ -83,12 +83,12 @@ def tfidf(tf, idf):
     return tfidf
 
 def doc_convolute(string, word2vec_model, ndim):
-    """
-    Args:
-        file_name:      ファイルの相対パス，または絶対パス
-        word2vec_model: Word2Vec.load(model)したもの
-        ndim:           modelの次元数．
-    """
+    # 
+    # Args:
+    #     file_name:      ファイルの相対パス，または絶対パス
+    #     word2vec_model: Word2Vec.load(model)したもの
+    #     ndim:           modelの次元数．
+    #
     import mecabutil
     import numpy
     from gensim.models import word2vec
