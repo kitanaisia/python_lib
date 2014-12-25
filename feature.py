@@ -82,10 +82,10 @@ def tfidf(tf, idf):
 
     return tfidf
 
-def doc_convolute(string, word2vec_model, ndim):
+def doc_convolute(content_words, word2vec_model, ndim):
     # 
     # Args:
-    #     file_name:      ファイルの相対パス，または絶対パス
+    #     content_words : 特徴量を計算する単語(内容語)のリスト，文字列のlist．
     #     word2vec_model: Word2Vec.load(model)したもの
     #     ndim:           modelの次元数．
     #
@@ -93,15 +93,12 @@ def doc_convolute(string, word2vec_model, ndim):
     import numpy
     from gensim.models import word2vec
 
-    words = mecabutil.get_words(string)
-    nouns = [word.surface for word in words if word.pos == u"名詞"]
-
     # 文中の名詞数(縦) * modelの次元数(横) の行列の生成
     matrix = numpy.zeros(ndim)  # いい初期化方法がないのでこれで
-    for noun in nouns:
+    for content_word in content_words:
         try:
-            matrix = numpy.vstack([ matrix, word2vec_model[noun] ])
-            # matrix += word2vec_model[noun]
+            matrix = numpy.vstack([ matrix, word2vec_model[content_word] ])
+            # matrix += word2vec_model[content_word]
         except:
             matrix = numpy.vstack([ matrix, numpy.zeros(ndim)])
 
