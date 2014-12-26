@@ -91,6 +91,7 @@ def doc_convolute(content_words, word2vec_model, ndim):
     #
     import mecabutil
     import numpy
+    import vital
     from gensim.models import word2vec
 
     # 文中の名詞数(縦) * modelの次元数(横) の行列の生成
@@ -106,9 +107,13 @@ def doc_convolute(content_words, word2vec_model, ndim):
     # 変数初期化のために作成した0ベクトルを削除
     matrix = numpy.delete(matrix, 0, 0)
 
-    ## エラー処理:1単語しか存在しない場合，畳み込み不可能．そのベクトルを返す
+    ## エラー処理:辞書にある語が1単語しかない場合，畳み込み不可能．そのベクトルを返す
     if len(matrix) == 1:
         return matrix
+
+    ## エラー処理:入力単語全てがOOVの場合，ベクトル計算不可能．
+    if matrix.ndim == 1:
+        raise Exception, u"入力単語が全てOOV"
 
     # ベクトルコンボルーション
     conv_matrix = numpy.zeros(ndim)
