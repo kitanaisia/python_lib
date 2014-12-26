@@ -100,13 +100,14 @@ def doc_convolute(content_words, word2vec_model, ndim):
             matrix = numpy.vstack([ matrix, word2vec_model[content_word] ])
             # matrix += word2vec_model[content_word]
         except:
-            matrix = numpy.vstack([ matrix, numpy.zeros(ndim)])
+            pass
+            # matrix = numpy.vstack([ matrix, numpy.zeros(ndim)])
 
     # 変数初期化のために作成した0ベクトルを削除
     matrix = numpy.delete(matrix, 0, 0)
 
     ## エラー処理:1単語しか存在しない場合，畳み込み不可能．そのベクトルを返す
-    if matrix.ndim == 1:
+    if len(matrix) == 1:
         return matrix
 
     # ベクトルコンボルーション
