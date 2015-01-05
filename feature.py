@@ -132,3 +132,34 @@ def doc_convolute(content_words, word2vec_model, ndim):
     vector = numpy.array([max(row) for row in conv_matrix.T])
 
     return vector
+
+def keyword2vec(keywords, word2vec_model, ndim):
+    # 
+    # Args:
+    #     keywords      : 文書中のキーワード群，文字列のlist．
+    #     word2vec_model: Word2Vec.load(model)したもの
+    #     ndim:           modelの次元数．
+    #
+    import vital
+    import numpy
+    from gensim.models import word2vec
+
+    matrix = numpy.zeros(ndim)  # いい初期化方法がないのでこれで
+    for word in keywords:
+        try:
+            matrix = numpy.vstack([ matrix, word2vec_model[word] ])
+        except:
+            pass
+
+    # 変数初期化のために作成した0ベクトルを削除
+    matrix = numpy.delete(matrix, 0, 0)
+
+    ## エラー処理:入力単語全てがOOVの場合，ベクトル計算不可能．
+    if matrix.ndim == 1:
+        raise Exception, u"入力単語が全てOOV"
+
+    # 各行のavg値を取得
+    vector = numpy.array([sum(row) / float(len(row)) for row in matrix.T])
+    # vector = numpy.array([max(row) for row in matrix.T])
+
+    return vector
