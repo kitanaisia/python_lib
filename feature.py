@@ -94,6 +94,10 @@ def doc_convolute(content_words, word2vec_model, ndim):
     import vital
     from gensim.models import word2vec
 
+    # 型チェック．content_wordsがstringでも，1語単位でfor文が回り，エラーなく結果がでてしまうため．
+    if not isinstance(content_words, list):
+        raise Exception, "doc_convoluteの型がlist型でありません．"
+
     # 文中の名詞数(縦) * modelの次元数(横) の行列の生成
     matrix = numpy.zeros(ndim)  # いい初期化方法がないのでこれで
     for content_word in content_words:
