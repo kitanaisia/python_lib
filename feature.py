@@ -128,8 +128,6 @@ def doc_convolute(content_words, word2vec_model, ndim):
     ## 変数初期化のために作成した0ベクトルを削除
     conv_matrix = numpy.delete(conv_matrix, 0, 0)
 
-    print(conv_matrix)
-
     # 各行のMAX値を取得
     vector = numpy.array([max(row) for row in conv_matrix.T])
 
