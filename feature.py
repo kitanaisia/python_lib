@@ -1,12 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-def tf(file_path):
+def tf(file_path, content_poslist):
     #
     # 引数のファイルを読み込み，TFを計算する．
     #
     # Args:
     #     file_path: TFを計算するファイルの相対，または絶対パス．
+    #     content_poslist:  内容語の品詞．内容語に対してのみtfを計算する．str型を要素に持つlist.
     #
     # Returns:
     #     単語とそのTF値を組にした辞書型．
@@ -21,19 +22,20 @@ def tf(file_path):
     words = mecabutil.get_words(contents)
     
     # 形態素解析結果から，名詞の単語の表層のみを抽出
-    nouns = [word.surface for word in words if word.pos == u"名詞"]
+    nouns = [word.surface for word in words if word.pos in content_poslist]
 
     # 名詞の集合(重複なし)を用意し，各名詞毎に出現回数をカウントする
     tf = {key : ( float( nouns.count(key) ) / float( len(nouns) ) ) for key in set(nouns)}
 
     return tf
 
-def idf(directory_path):
+def idf(directory_path, content_poslist):
     # 
     # ディレクトリ中の全ファイルからidf値を計算する．
     # 
     # Args:
-    #     directory_path: idfを計算するファイル群が存在するディレクトリの相対，または絶対パス．
+    #     directory_path:   idfを計算するファイル群が存在するディレクトリの相対，または絶対パス．
+    #     content_poslist:  内容語の品詞．内容語に対してのみidfを計算する．str型を要素に持つlist.
     # 
     # Returns:
     #     単語とそのIDF値を組にした辞書型．
@@ -54,7 +56,7 @@ def idf(directory_path):
         words = mecabutil.get_words(contents)
         
         # 形態素解析結果から，名詞の単語の表層のみを抽出
-        nouns = [word.surface for word in words if word.pos == u"名詞"]
+        nouns = [word.surface for word in words if word.pos in content_poslist]
 
         # 文書中の名詞を集合(重複なしの要素の集まり)とし，存在する名詞のdf値をインクリメント
         for key in set(nouns):
