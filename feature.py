@@ -61,7 +61,7 @@ def idf(directory_path):
             df[key] += 1
 
     # dfからidfを計算
-    idf = {k:math.log( 1.0 + ( len(files) ) / v ) for k,v in df.items()}
+    idf = {k:math.log10( 1.0 + ( float (len(files) ) ) / float(v) ) for k,v in df.items()}
 
     return idf
 
@@ -127,6 +127,8 @@ def doc_convolute(content_words, word2vec_model, ndim):
 
     ## 変数初期化のために作成した0ベクトルを削除
     conv_matrix = numpy.delete(conv_matrix, 0, 0)
+
+    print(conv_matrix)
 
     # 各行のMAX値を取得
     vector = numpy.array([max(row) for row in conv_matrix.T])
