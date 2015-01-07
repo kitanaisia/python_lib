@@ -1,12 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-def tf(file_path, content_poslist):
+def tf(contents, content_poslist):
     #
     # 引数のファイルを読み込み，TFを計算する．
     #
     # Args:
-    #     file_path: TFを計算するファイルの相対，または絶対パス．
+    #     contents: TFを計算するUnicode型文字列．
     #     content_poslist:  内容語の品詞．内容語に対してのみtfを計算する．str型を要素に持つlist.
     #
     # Returns:
@@ -14,9 +14,6 @@ def tf(file_path, content_poslist):
     #
     import vital        # 自作，よく使う処理群
     import mecabutil    # 自作，MeCabのwrapperとそのクラス
-
-    # ファイル読み込み
-    contents = vital.file_read(file_path)
 
     # 形態素解析し，結果をWordクラスの配列に格納
     words = mecabutil.get_words(contents)
