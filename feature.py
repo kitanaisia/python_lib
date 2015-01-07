@@ -22,7 +22,7 @@ def tf(file_path, content_poslist):
     words = mecabutil.get_words(contents)
     
     # 形態素解析結果から，名詞の単語の表層のみを抽出
-    nouns = [word.surface for word in words if word.pos in content_poslist]
+    nouns = [word.base_form for word in words if word.pos in content_poslist]
 
     # 名詞の集合(重複なし)を用意し，各名詞毎に出現回数をカウントする
     tf = {key : ( float( nouns.count(key) ) / float( len(nouns) ) ) for key in set(nouns)}
@@ -56,7 +56,7 @@ def idf(directory_path, content_poslist):
         words = mecabutil.get_words(contents)
         
         # 形態素解析結果から，名詞の単語の表層のみを抽出
-        nouns = [word.surface for word in words if word.pos in content_poslist]
+        nouns = [word.base_form for word in words if word.pos in content_poslist]
 
         # 文書中の名詞を集合(重複なしの要素の集まり)とし，存在する名詞のdf値をインクリメント
         for key in set(nouns):
