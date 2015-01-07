@@ -100,6 +100,10 @@ def get_words(string):
                 kana = "*"
                 pronounce = "*"
 
+                # 原型が登録されていない場合，表層単語を原型として用いる．
+                if base_form == "*":
+                    base_form = surface
+
                 word = Word(surface, pos, pos_detail1, pos_detail2, pos_detail3, pos_detail4, pos_detail5, base_form, kana, pronounce)
                 word_arr.append(word)
 
