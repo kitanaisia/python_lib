@@ -87,6 +87,9 @@ def doc_convolute(content_words, word2vec_model, ndim):
     #     content_words : 特徴量を計算する単語(内容語)のリスト，文字列のlist．
     #     word2vec_model: Word2Vec.load(model)したもの
     #     ndim:           modelの次元数．
+    # 
+    # TODO:
+    #     語彙が1単語の場合，構造が二重配列になって帰ってくる
     #
     import mecabutil
     import numpy
@@ -162,3 +165,47 @@ def keyword2vec(keywords, word2vec_model, ndim):
     # vector = numpy.array([max(row) for row in matrix.T])
 
     return vector
+
+def n_similarity(words1, words2, model):
+    import numpy
+    import gensim.matutils as matutils
+    """
+    Compute cosine similarity between two sets of words.
+
+    Example::
+
+      >>> trained_model.n_similarity(['sushi', 'shop'], ['japanese', 'restaurant'])
+      0.61540466561049689
+
+      >>> trained_model.n_similarity(['restaurant', 'japanese'], ['japanese', 'restaurant'])
+      1.0000000000000004
+
+      >>> trained_model.n_similarity(['sushi'], ['restaurant']) == trained_model.similarity('sushi', 'restaurant')
+      True
+
+    """
+    v1 = []
+    v2 = []
+    for word in words1:
+        try:
+            v1.append(model[word])
+        except:
+            pass
+
+    for word in words2:
+        try:
+            v2.append(model[word])
+        except:
+            pass
+
+    if v1 == []:
+        raise Exception, "入力語が全てOOV"
+    if v2 == []:
+        raise Exception, "入力語が全てOOV"
+
+    # mean(axis=0):縦方向に平均を取る．多分，単語の各次元毎に平均を取る．
+    # unitvec     :単位ベクトルのこと．つまり正規化
+    # dot         :行列積．
+    sim = numpy.dot(matutils.unitvec(numpy.array(v1).mean(axis=0)), matutils.unitvec(numpy.array(v2).mean(axis=0)))
+    return sim
+
