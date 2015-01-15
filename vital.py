@@ -53,3 +53,9 @@ def parse(file_path, separator):
 
     return result
 
+def merge_dict(dict1, dict2, weight1, weight2):
+    from collections import Counter
+    weight_dict1 = {k:weight1 * v for k,v in dict1.items()}
+    weight_dict2 = {k:weight2 * v for k,v in dict2.items()}
+    
+    return dict(Counter(weight_dict1) + Counter(weight_dict2))
