@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-def tf(contents, content_poslist):
+def tf(contents, content_poslist, enable_log = False):
     #
     # 引数のファイルを読み込み，TFを計算する．
     #
@@ -14,6 +14,7 @@ def tf(contents, content_poslist):
     #
     import vital        # 自作，よく使う処理群
     import mecabutil    # 自作，MeCabのwrapperとそのクラス
+    import math
 
     # 形態素解析し，結果をWordクラスの配列に格納
     words = mecabutil.get_words(contents)
@@ -22,7 +23,10 @@ def tf(contents, content_poslist):
     nouns = [word.base_form for word in words if word.pos in content_poslist]
 
     # 名詞の集合(重複なし)を用意し，各名詞毎に出現回数をカウントする
-    tf = {key : ( float( nouns.count(key) ) / float( len(nouns) ) ) for key in set(nouns)}
+    if enable_log:
+        tf = {key : 1 + math.log( nouns.count(key)) for key in set(nouns)}
+    else:
+        tf = {key : nouns.count(key) for key in set(nouns)}
 
     return tf
 
@@ -78,6 +82,9 @@ def tfidf(tf, idf):
     idf_unknown = 0 #未知語のidf値．0は不適切だが，今は考えない．
 
     tfidf = {k:v * idf.get(k,idf_unknown) for k,v in tf.items()}
+
+    # 正規化
+    tfidf = {k:( v / max(tfidf.values()) ) for k,v in tfidf.items()}
 
     return tfidf
 
