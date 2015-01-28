@@ -130,15 +130,19 @@ def doc_convolute(content_words, word2vec_model, ndim):
 
     # ベクトルコンボルーション
     conv_matrix = numpy.zeros(ndim)
-    for i in range(len(matrix)-1):
-        conv_vector = numpy.convolve(matrix[i,:], matrix[i+1,:], "same")
+    for i in range(len(matrix)-2):
+        conv_vector1 = numpy.convolve(matrix[i,:], matrix[i+1,:], "same")
+        conv_vector2 = numpy.convolve(matrix[i+1,:], matrix[i+2,:], "same")
+        conv_vector = numpy.convolve(conv_vector1, conv_vector2, "same")
+        # conv_vector = numpy.convolve(matrix[i,:], matrix[i+1,:], "same")
         conv_matrix = numpy.vstack([ conv_matrix, conv_vector])
 
     ## 変数初期化のために作成した0ベクトルを削除
     conv_matrix = numpy.delete(conv_matrix, 0, 0)
 
     # 各行のMAX値を取得
-    vector = numpy.array([max(row) for row in conv_matrix.T])
+    # vector = numpy.array([max(row) for row in conv_matrix.T])
+    vector = numpy.array([sum(row) / float(len(row)) for row in conv_matrix.T])
 
     return vector
 
